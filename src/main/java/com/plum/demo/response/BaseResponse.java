@@ -1,6 +1,6 @@
 package com.plum.demo.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;  //This annotation is used to specify the JSON property name during serialization and deserialization.
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
@@ -9,8 +9,8 @@ import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-@SuperBuilder //parent class ka (bacho dedeta hai) - good for inheritance
-public class BaseResponse implements Serializable { //serizable inherit - object class is parent
+@SuperBuilder
+public class BaseResponse implements Serializable {
     @JsonProperty("success")
     private Boolean success = Boolean.FALSE;
 
@@ -32,7 +32,7 @@ public class BaseResponse implements Serializable { //serizable inherit - object
 
     public BaseResponse() {
         super();
-    } //calling constructor of super class -explicit calling
+    }
 
     public BaseResponse(Boolean success, Integer code, String message, String error) {
         super();

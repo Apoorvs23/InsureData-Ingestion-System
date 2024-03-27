@@ -2,10 +2,10 @@ package com.plum.demo.entity;
 
 import lombok.Data;
 
-        import javax.persistence.Column;
-        import javax.persistence.MappedSuperclass;
-        import java.io.Serializable;
-        import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 @Data
 @MappedSuperclass
 public class BaseEntity implements Serializable {

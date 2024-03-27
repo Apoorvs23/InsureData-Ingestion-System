@@ -1,5 +1,6 @@
 package com.plum.demo.controller;
 
+import com.plum.demo.entity.OrganisationEntity;
 import com.plum.demo.exception.CustomException;
 import com.plum.demo.request.CreateOrganisationRequest;
 import com.plum.demo.request.UploadEmployeesRequest;
@@ -20,8 +21,8 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 
-@RestController // - request class
-@RequestMapping({"api/organisations", "api/v1/organisations"}) //generic mapping that will have all mapping
+@RestController
+@RequestMapping({"api/organisations", "api/v1/organisations"})
 public class OrganisationController extends BaseController {
 
     @Autowired
@@ -36,34 +37,34 @@ public class OrganisationController extends BaseController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE) // mein kya doonga
-    public CreateOrganisationResponse createOrganisation(@NotNull @RequestBody CreateOrganisationRequest // all paramter should be non-null?
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public CreateOrganisationResponse createOrganisation(@NotNull @RequestBody CreateOrganisationRequest
                                                                  createOrganisationRequest) throws CustomException {
-        organisationValidation.validate(createOrganisationRequest); //400, status code - wrong status code
+        organisationValidation.validate(createOrganisationRequest);
         CreateOrganisationResponse createOrganisationResponse = null;
         try {
-            createOrganisationResponse = organisationService.createOrganisation(createOrganisationRequest); //entry krdo DB mein
+            createOrganisationResponse = organisationService.createOrganisation(createOrganisationRequest);
         } catch (Exception e) {
-            throw new CustomException("Error while creating Organisation"); //call exception handler
+            throw new CustomException("Error while creating Organisation");
         }
         return createOrganisationResponse;
     }
 
     @PostMapping(value = "/{orgId}/members/upload", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE) //uploading file of employee of the organizations - You will get file
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CreateEmployeeResponse uploadEmployees(@PathVariable("orgId") Integer orgId,
-                                                  @RequestParam("employee_data") MultipartFile employeeFile) throws CustomException { //? is requstparam
+                                                  @RequestParam("employee_data") MultipartFile employeeFile) throws CustomException {
         organisationValidation.isOrganisationIdValid(orgId);
         List<UploadEmployeesRequest> uploadEmployeesRequests = null;
         try {
-            uploadEmployeesRequests = CSVUtils.read(UploadEmployeesRequest.class, employeeFile.getInputStream()); // will convert data from csv and generate list of java objects and return it as list of request
+            uploadEmployeesRequests = CSVUtils.read(UploadEmployeesRequest.class, employeeFile.getInputStream());
         } catch (IOException e) {
             throw new CustomException(e.getMessage());
         }
         employeeValidation.validate(uploadEmployeesRequests);
         CreateEmployeeResponse createEmployeeResponse = null;
         try {
-            createEmployeeResponse = employeeService.addEmployees(uploadEmployeesRequests, orgId); //we will validate employees and then we will put them to the database
+            createEmployeeResponse = employeeService.addEmployees(uploadEmployeesRequests, orgId);
         } catch (Exception e) {
             throw new CustomException("Error while Adding Employees for org id : " + orgId);
         }
@@ -73,6 +74,13 @@ public class OrganisationController extends BaseController {
     @GetMapping(value = "/get_paginated_data")
     public OrganisationsPaginatedResponse getOrganisationsData(@RequestParam("page") Integer page,
                                                                @RequestParam("size") Integer size) {
-        return employeeService.getOrganisationsDataInPages(page, size);  // 100 - rows (61 to 80 )page number and size - 2,5
+        return employeeService.getOrganisationsDataInPages(page, size);
+    }
+
+    @GetMapping(value = "/{orgId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public OrganisationEntity getOrganisation(@PathVariable("orgId") Integer orgId) throws CustomException {
+        // redis [1,2,3,4]
+        organisationValidation.isOrganisationIdValid(orgId);
+        return organisationService.getOrganisationEntity(orgId);
     }
 }

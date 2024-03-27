@@ -5,29 +5,26 @@ import com.plum.demo.repository.OrganisationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
-// OrganisationManager class manages operations related to organisations
-public class OrganisationManager { // (get data - do some operation then give to service layer)
+import java.util.Optional;
 
-    // Autowired annotation to inject OrganisationRepository dependency
+@Component
+public class OrganisationManager {
     @Autowired
     private OrganisationRepository organisationRepository;
 
-    // Method to create a new organisation entity
-
     public OrganisationEntity createOrganisation(OrganisationEntity organisationEntity) {
-        return organisationRepository.save(organisationEntity); // Save organisation entity using repository
+        return organisationRepository.save(organisationEntity);
     }
 
-    // Method to check if an organisation exists based on email and phone number
+    public Optional<OrganisationEntity> getOrganisationEntity(Integer orgId) {
+        return organisationRepository.findById(orgId);
+    }
+
     public boolean isOrganisationExist(String email, String phone) {
-        // Check if any organisations with the given email and phone number exist
         return organisationRepository.findAllByEmailAndPhoneNo(email, phone).size() > 0;
     }
 
-    // Method to check if an organisation ID exists
     public boolean isOrganisationIdExist(Integer id) {
-        // Check if any organisations with the given ID exist
         return organisationRepository.findAllById(id).size() > 0;
     }
 }

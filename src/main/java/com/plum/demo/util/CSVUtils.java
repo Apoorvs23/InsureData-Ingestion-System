@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class CSVUtils { //will create list of object. One object is one row
-    //This object is responsible for mapping CSV data to Java objects.
-    private static final CsvMapper mapper = new CsvMapper(); // converting input stream to list of obj class
+public class CSVUtils {
+    private static final CsvMapper mapper = new CsvMapper();
 
     public static <T> List<T> read(Class<T> clazz, InputStream stream) throws IOException {
         mapper.enable(CsvParser.Feature.EMPTY_STRING_AS_NULL);
