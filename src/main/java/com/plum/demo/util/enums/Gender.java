@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Getter
-@AllArgsConstructor
+@Getter // no setter required
+@AllArgsConstructor // enum - male,age
 public enum Gender {
     MALE("male"),
     FEMALE("female"),
@@ -19,14 +19,15 @@ public enum Gender {
     @JsonValue
     private final String name;
 
+
     private static final Map<String, Gender> lookUpMap = new HashMap<>();
 
-    static {
+    static { //compiletime, one time execute
         for (Gender gender : Gender.values()) {
-            lookUpMap.put(gender.getName(), gender);
+            lookUpMap.put(gender.getName(), gender); //getName - "male",MALE
         }
     }
-
+    // lookupmap - 3 values
     @Override
     public String toString() {
         return this.name;

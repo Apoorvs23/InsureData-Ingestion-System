@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CreateOrganisationRequest extends BaseRequest {
+@Builder // builder design pattern (annotations have this)
+public class CreateOrganisationRequest extends BaseRequest { //body class - request class cant be not in camelCase
 
     @JsonProperty("name")
     private String name;

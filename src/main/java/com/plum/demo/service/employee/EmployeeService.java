@@ -32,7 +32,7 @@ public class EmployeeService extends BaseService {
         List<EmployeeEntity> addedEmployees = new ArrayList<>();
         List<UploadEmployeesRequest> rejectedEmployees = new ArrayList<>();
 
-        uploadEmployeesRequestList.forEach(
+        uploadEmployeesRequestList.forEach( //for loop
                 uploadEmployeesRequest -> {
                     if (employeeValidation.validateParticularEmployee(uploadEmployeesRequest)) {
                         addedEmployees.add(addEmployee(uploadEmployeesRequest, orgId));
@@ -72,21 +72,21 @@ public class EmployeeService extends BaseService {
     public OrganisationsPaginatedResponse getOrganisationsDataInPages(Integer pageNumber, Integer pageSize) {
         Pageable pageable = getPaginationCriteria(pageNumber, pageSize);
         Page<EmployeeEntity> page = employeeManager.findAll(pageable);
-        Map<Integer, List<EmployeeEntity>> orgWiseEmployees = getOrgWiseEmployees(page.getContent());
+        Map<Integer, List<EmployeeEntity>> orgWiseEmployees = getOrgWiseEmployees(page.getContent()); //data , id -> employee entity
         OrganisationsPaginatedResponse organisationsPaginatedResponse = getOrganisationsPaginatedResponse(
                 orgWiseEmployees
         );
         return organisationsPaginatedResponse;
     }
 
-    private Pageable getPaginationCriteria(Integer pageNumber, Integer pageSize) {
+    private Pageable getPaginationCriteria(Integer pageNumber, Integer pageSize) { //creating page request, size and sort order
         Sort sort = Sort.by(Constants.ORG_ID).ascending();
         return PageRequest.of(pageNumber, pageSize, sort);
     }
 
     private Map<Integer, List<EmployeeEntity>> getOrgWiseEmployees(List<EmployeeEntity> employeeEntities) {
         Map<Integer, List<EmployeeEntity>> map = new HashMap<>();
-        employeeEntities.stream().forEach(employeeEntity -> {
+        employeeEntities.stream().forEach(employeeEntity -> { //stream of bytes - creating list of id,organizations and then putting them into map
             List<EmployeeEntity> list = map.get(employeeEntity.getOrgId());
             if (!Objects.isNull(list)) {
                 list.add(employeeEntity);

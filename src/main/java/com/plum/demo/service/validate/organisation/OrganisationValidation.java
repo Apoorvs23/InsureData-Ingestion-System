@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-
+//class to check organization check points
 @Service
 public class OrganisationValidation extends ValidationService<CreateOrganisationRequest> {
 

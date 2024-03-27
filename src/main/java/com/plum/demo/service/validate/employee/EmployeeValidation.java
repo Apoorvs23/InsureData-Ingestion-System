@@ -62,7 +62,7 @@ public class EmployeeValidation extends ValidationService<List<UploadEmployeesRe
     private void validateGender(String gender) throws CustomException {
         gender = gender.replaceAll("\\s", "");
         gender = gender.toLowerCase();
-        Gender gen = Gender.getGenderByName(gender);
+        Gender gen = Gender.getGenderByName(gender); //enums are dictionary
         if (Objects.isNull(gen)) {
             throw new CustomException("Invalid Gender Field");
         }

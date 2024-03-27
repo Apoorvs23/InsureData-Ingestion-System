@@ -29,20 +29,24 @@ public class OrganisationService extends BaseService {
     @Autowired
     private ObjectMapper objectMapper;
 
-
+    // Method to create an organisation based on the provided request.
     public CreateOrganisationResponse createOrganisation(CreateOrganisationRequest createOrganisationRequest) {
+        // Creating an OrganisationEntity object based on the request data.
         OrganisationEntity organisationEntity = getOrganisationEntity(createOrganisationRequest);
+        // Saving the organisationEntity using the organisationManager.
         organisationEntity = organisationManager.createOrganisation(organisationEntity);
+        // Building and returning a CreateOrganisationResponse object.
         return CreateOrganisationResponse.builder()
                 .name(organisationEntity.getName())
                 .orgId(organisationEntity.getId())
                 .success(Boolean.TRUE)
                 .status("SUCCESS")
-                .build();
+                .build();  // New object created and returned.
     }
-
+    // Method to convert CreateOrganisationRequest to OrganisationEntity.
     private OrganisationEntity getOrganisationEntity(CreateOrganisationRequest createOrganisationRequest) {
         OrganisationEntity organisationEntity = new OrganisationEntity();
+        // Setting attributes of OrganisationEntity based on the request.
         organisationEntity.setName(createOrganisationRequest.getName());
         organisationEntity.setCategory(createOrganisationRequest.getCategory());
         organisationEntity.setCountry(createOrganisationRequest.getCountry());
@@ -53,7 +57,7 @@ public class OrganisationService extends BaseService {
         organisationEntity.setLocationDescription(createOrganisationRequest.getLocationDescription());
         organisationEntity.setPhoneNo(createOrganisationRequest.getPhoneNo());
         organisationEntity.setPinCode(createOrganisationRequest.getPinCode());
-        organisationEntity.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
+        organisationEntity.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC)); // Setting creation timestamp.
         return organisationEntity;
     }
 
